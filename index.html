@@ -3,286 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kết Quả Học Tập Giáo Dục Thể Chất</title>
+    <title>Trang Tra Cứu Sinh Viên Hoàn Thành GDTC</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* MẶC ĐỊNH TRÊN WEB: ẨN PHÔI EXCEL DÀNH CHO MÁY IN */
-        #excelPrintTemplate {
-            display: none !important;
-        }
-
-        /* ĐỊNH DẠNG CẤU TRÚC KHI BẤM NÚT IN RA GIẤY A4 */
+        /* CẤU HÌNH PHỤC VỤ IN ẤN (PRINT CSS) THEO MẪU EXCEL */
         @media print {
-            /* 1. Ẩn toàn bộ giao diện tra cứu và nút bấm trên màn hình web */
-            .no-print, body > *:not(#excelPrintTemplate) {
-                display: none !important;
-            }
-            
-            /* 2. Ép hiển thị phôi cấu trúc ô lưới Excel */
-            #excelPrintTemplate, #excelPrintTemplate * {
-                display: block !important;
-            }
-            #excelPrintTemplate table, #excelPrintTemplate th, #excelPrintTemplate td {
-                display: table !important;
-            }
-            #excelPrintTemplate tr {
-                display: table-row !important;
-            }
-            #excelPrintTemplate tbody {
-                display: table-row-group !important;
-            }
-
-            /* 3. Cấu hình trang giấy in A4 dọc */
-            @page {
-                size: A4 portrait;
-                margin: 15mm 15mm 15mm 15mm;
-            }
-            body {
-                background-color: #fff !important;
+            /* Ẩn tất cả các thành phần giao diện web không liên quan */
+            body, .max-w-2xl, #resultArea, header, nav, button {
+                background: none !important;
+                background-color: transparent !important;
+                box-shadow: none !important;
+                border: none !important;
                 padding: 0 !important;
                 margin: 0 !important;
             }
+            body * {
+                visibility: hidden;
+            }
+            /* Chỉ hiển thị duy nhất khung phôi in Excel */
+            #excelPrintTemplate, #excelPrintTemplate * {
+                visibility: visible;
+            }
+            #excelPrintTemplate {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                display: block !important;
+            }
+            /* Thiết lập trang in khổ A4 dọc */
+            @page {
+                size: A4 portrait;
+                margin: 15mm 15mm 15mm 20mm; /* Căn lề chuẩn văn bản */
+            }
+        }
 
-            /* 4. Định dạng khung lưới ô Excel bắt buộc viền đen mảnh mảnh */
-            .excel-grid-table {
-                width: 100% !important;
-                border-collapse: collapse !important;
-                margin-top: 15px !important;
-                margin-bottom: 15px !important;
-                font-family: "Times New Roman", Times, serif !important;
-            }
-            .excel-grid-table th, .excel-grid-table td {
-                border: 1px solid #000 !important;
-                padding: 6px 10px !important;
-                text-align: center !important;
-                font-size: 13pt !important;
-                color: #000 !important;
-                vertical-align: middle !important;
-            }
-            .excel-grid-table th {
-                font-weight: bold !important;
-            }
-            .text-left-excel {
-                text-align: left !important;
-            }
+        /* Định dạng lưới ô nét mảnh chuẩn bộ khung Excel */
+        .excel-table th, .excel-table td {
+            border: 1px solid #000000 !important;
+            padding: 5px 8px;
+            vertical-align: middle;
         }
     </style>
 </head>
-<body class="bg-gray-200 min-h-screen py-8 px-2 sm:px-4 font-serif">
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen py-10 px-4">
 
-    <div class="max-w-4xl mx-auto bg-white p-4 rounded-xl shadow-md border border-gray-300 mb-6 no-print">
-        <div class="flex flex-col sm:flex-row gap-3 items-center">
-            <label for="studentIdInput" class="font-bold text-gray-700 text-base shrink-0 font-sans">
-                <i class="fa-solid fa-graduation-cap text-blue-800 mr-1"></i> Nhập mã số sinh viên:
+    <div class="max-w-2xl mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-md border border-gray-200 printable-area">
+        
+        <h1 class="text-[4vw] sm:text-lg md:text-xl font-black text-center text-blue-900 uppercase tracking-wide mb-8 border-b-2 border-blue-600 pb-4 block whitespace-nowrap overflow-hidden">
+            TRANG TRA CỨU SINH VIÊN HOÀN THÀNH GDTC
+        </h1>
+
+        <div class="space-y-2 mb-8">
+            <label for="studentIdInput" class="block font-bold text-gray-700 text-sm sm:text-base">
+                Nhập mã sinh viên:
             </label>
-            <div class="flex w-full gap-2">
+            <div class="flex gap-2">
                 <input 
                     type="text" 
                     id="studentIdInput" 
-                    placeholder="Nhập mã SV (Ví dụ: 3120220080...)" 
-                    class="flex-grow px-4 py-2 border border-gray-300 rounded-lg outline-none font-sans uppercase font-semibold tracking-wider text-sm focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                    placeholder="Ví dụ: 3120220080..." 
+                    class="flex-grow px-3 py-2 border border-gray-300 rounded-xl focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none uppercase font-mono tracking-wider text-gray-900 text-sm sm:text-base"
                 >
                 <button 
                     id="searchBtn" 
-                    class="px-5 py-2 bg-blue-700 hover:bg-blue-800 text-white font-semibold font-sans rounded-lg shadow-sm transition-colors cursor-pointer flex items-center gap-2 text-sm shrink-0"
+                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-sm transition-colors cursor-pointer flex items-center gap-2 shrink-0 text-sm sm:text-base"
                 >
                     <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
                 </button>
             </div>
         </div>
+
+        <div id="resultArea">
+            <div id="defaultState" class="text-center py-6 text-gray-400 text-xs sm:text-sm italic">
+                Vui lòng nhập mã và nhấn Tìm kiếm hoặc Enter để xem trạng thái.
+            </div>
+
+            <div id="loadingState" class="hidden text-center py-6 text-blue-600 text-xs sm:text-sm font-medium">
+                <i class="fa-solid fa-circle-notch animate-spin mr-2"></i> Đang kết nối dữ liệu đám mây, vui lòng đợi...
+            </div>
+
+            <div id="profileForm" class="hidden border border-gray-200 rounded-xl overflow-hidden bg-gray-50">
+                <div class="bg-blue-900 text-white px-4 py-2.5 font-bold text-xs sm:text-sm whitespace-nowrap text-center flex justify-between items-center">
+                    <span>HỒ SƠ KẾT QUẢ TRA CỨU</span>
+                    <button id="printBtn" class="bg-amber-500 hover:bg-amber-600 text-white text-xs px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1 transition-colors font-semibold cursor-pointer">
+                        <i class="fa-solid fa-print"></i> In kết quả học tập
+                    </button>
+                </div>
+                
+                <div class="p-4 space-y-3 text-xs sm:text-sm border-b border-gray-200">
+                    <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
+                        <span class="text-gray-500 font-medium whitespace-nowrap">Mã sinh viên:</span>
+                        <span id="masv" class="col-span-2 font-bold font-mono text-gray-900 truncate">--</span>
+                    </div>
+                    <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
+                        <span class="text-gray-500 font-medium whitespace-nowrap">Họ và tên:</span>
+                        <span id="hoten" class="col-span-2 font-semibold text-gray-900 truncate">--</span>
+                    </div>
+                    <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
+                        <span class="text-gray-500 font-medium whitespace-nowrap">Ngày sinh:</span>
+                        <span id="nsinh" class="col-span-2 text-gray-900 truncate font-semibold text-blue-800">--</span>
+                    </div>
+                    <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
+                        <span class="text-gray-500 font-medium whitespace-nowrap">Lớp sinh hoạt:</span>
+                        <span id="lopsh" class="col-span-2 text-gray-900 truncate">--</span>
+                    </div>
+                    <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
+                        <span class="text-gray-500 font-medium whitespace-nowrap">Khóa:</span>
+                        <span id="khoa" class="col-span-2 text-gray-900 truncate">--</span>
+                    </div>
+                    <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
+                        <span class="text-gray-500 font-medium whitespace-nowrap">Trường:</span>
+                        <span id="truong" class="col-span-2 text-gray-900 truncate">--</span>
+                    </div>
+                    <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
+                        <span class="text-gray-500 font-medium whitespace-nowrap">Số/Ngày QĐ:</span>
+                        <span id="qdinh" class="col-span-2 text-gray-900 truncate font-medium">--</span>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-white">
+                    <span class="text-gray-500 font-bold text-[11px] uppercase tracking-wider block mb-2">Chi tiết kết quả học phần</span>
+                    <div class="overflow-x-auto border border-gray-200 rounded-lg">
+                        <table class="w-full text-center text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-600 font-bold border-b border-gray-200">
+                                    <th class="py-2 px-1 border-r border-gray-200" colspan="2">GDTC 1</th>
+                                    <th class="py-2 px-1 border-r border-gray-200" colspan="2">GDTC 2</th>
+                                    <th class="py-2 px-1 border-r border-gray-200" colspan="2">GDTC 3</th>
+                                    <th class="py-2 px-1 border-r border-gray-200" colspan="2">GDTC 4</th>
+                                    <th class="py-2 px-1 border-r border-gray-200 bg-blue-50 text-blue-900" rowspan="2">TB Chung</th>
+                                    <th class="py-2 px-1 bg-amber-50 text-amber-900" rowspan="2">Xếp loại</th>
+                                </tr>
+                                <tr class="bg-gray-50 text-gray-500 text-[10px] border-b border-gray-200">
+                                    <th class="py-1 px-1 border-r border-gray-200">Số</th>
+                                    <th class="py-1 px-1 border-r border-gray-200">Chữ</th>
+                                    <th class="py-1 px-1 border-r border-gray-200">Số</th>
+                                    <th class="py-1 px-1 border-r border-gray-200">Chữ</th>
+                                    <th class="py-1 px-1 border-r border-gray-200">Số</th>
+                                    <th class="py-1 px-1 border-r border-gray-200">Chữ</th>
+                                    <th class="py-1 px-1 border-r border-gray-200">Số</th>
+                                    <th class="py-1 px-1 border-r border-gray-200">Chữ</th>
+                                </tr>
+                            </table>
+                            </thead>
+                            <tbody>
+                                <tr class="font-medium text-gray-900">
+                                    <td id="g1_so" class="py-2 border-r border-gray-200">--</td>
+                                    <td id="g1_chu" class="py-2 border-r border-gray-200 text-gray-500">--</td>
+                                    <td id="g2_so" class="py-2 border-r border-gray-200">--</td>
+                                    <td id="g2_chu" class="py-2 border-r border-gray-200 text-gray-500">--</td>
+                                    <td id="g3_so" class="py-2 border-r border-gray-200">--</td>
+                                    <td id="g3_chu" class="py-2 border-r border-gray-200 text-gray-500">--</td>
+                                    <td id="g4_so" class="py-2 border-r border-gray-200">--</td>
+                                    <td id="g4_chu" class="py-2 border-r border-gray-200 text-gray-500">--</td>
+                                    <td id="tbinh" class="py-2 border-r border-gray-200 bg-blue-50/50 font-bold text-blue-700">--</td>
+                                    <td id="xeploai" class="py-2 bg-amber-50/50 font-bold text-amber-700">--</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="notFoundState" class="hidden p-4 bg-red-50 border border-red-200 text-red-700 text-center rounded-xl text-xs sm:text-sm font-medium">
+                <i class="fa-solid fa-triangle-exclamation mr-1"></i> Không tìm thấy thông tin mã sinh viên hoặc chưa hoàn thành học phần GDTC.
+            </div>
+        </div>
     </div>
 
-    <div id="defaultState" class="max-w-4xl mx-auto text-center py-10 bg-white border border-gray-300 rounded-xl text-gray-500 font-sans italic text-sm no-print">
-        <i class="fa-solid fa-circle-info mr-1 text-blue-600"></i> Vui lòng điền mã số sinh viên ở trên rồi bấm Tìm kiếm để tải dữ liệu bảng điểm.
-    </div>
-
-    <div id="loadingState" class="hidden max-w-4xl mx-auto text-center py-10 bg-white border border-gray-300 rounded-xl text-blue-700 font-sans font-medium text-sm no-print">
-        <i class="fa-solid fa-spinner animate-spin mr-2"></i> Đang truy vấn dữ liệu từ hệ thống lưu trữ đám mây...
-    </div>
-
-    <div id="notFoundState" class="hidden max-w-4xl mx-auto text-center py-8 bg-red-50 border border-red-200 text-red-700 font-sans font-medium text-sm rounded-xl no-print">
-        <i class="fa-solid fa-circle-exclamation mr-1"></i> Không tìm thấy dữ liệu học tập của mã sinh viên này hoặc sinh viên chưa hoàn thành kết quả GDTC.
-    </div>
-
-
-    <div id="profileForm" class="hidden max-w-4xl mx-auto bg-white p-6 sm:p-10 shadow-xl border border-gray-300 rounded-md no-print">
-        
-        <div class="flex justify-end mb-6">
-            <button 
-                id="printBtn" 
-                class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold font-sans rounded-lg shadow transition-colors flex items-center gap-2 cursor-pointer text-sm"
-            >
-                <i class="fa-solid fa-print"></i> In kết quả (Mẫu Excel A4)
-            </button>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-sm">
-            <div class="p-3 bg-gray-50 rounded border border-gray-200">
-                <span class="text-gray-500 block">Mã sinh viên:</span>
-                <span id="masv" class="font-bold text-base text-gray-900">--</span>
+    <div id="excelPrintTemplate" class="hidden bg-white text-black font-serif p-2" style="width: 210mm;">
+        <div class="flex justify-between items-start text-sm font-bold mb-4">
+            <div class="text-center">
+                <p class="uppercase">ĐẠI HỌC ĐÀ NẴNG</p>
+                <p class="uppercase text-xs underline decoration-solid underline-offset-4 font-black">KHOA GIÁO DỤC THỂ CHẤT</p>
             </div>
-            <div class="p-3 bg-gray-50 rounded border border-gray-200">
-                <span class="text-gray-500 block">Họ và tên:</span>
-                <span id="hoten" class="font-bold text-base text-gray-900">--</span>
-            </div>
-            <div class="p-3 bg-gray-50 rounded border border-gray-200">
-                <span class="text-gray-500 block">Ngày sinh:</span>
-                <span id="nsinh" class="font-semibold text-gray-900">--</span>
-            </div>
-            <div class="p-3 bg-gray-50 rounded border border-gray-200">
-                <span class="text-gray-500 block">Lớp sinh hoạt:</span>
-                <span id="lopsh" class="font-semibold text-gray-900">--</span>
-            </div>
-            <div class="p-3 bg-gray-50 rounded border border-gray-200">
-                <span class="text-gray-500 block">Khoa:</span>
-                <span id="khoa" class="font-semibold text-gray-900">--</span>
-            </div>
-            <div class="p-3 bg-gray-50 rounded border border-gray-200">
-                <span class="text-gray-500 block">Trường:</span>
-                <span id="truong" class="font-semibold text-gray-900">--</span>
-            </div>
-            <div class="p-3 bg-gray-50 rounded border border-gray-200 md:col-span-2">
-                <span class="text-gray-500 block">Số/Ngày Quyết định:</span>
-                <span id="qdinh" class="font-bold text-blue-800">--</span>
+            <div class="text-center">
+                <p class="uppercase">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+                <p class="text-xs underline decoration-double underline-offset-4 font-bold">Độc lập - Tự do - Hạnh phúc</p>
             </div>
         </div>
 
-        <div class="overflow-x-auto border border-gray-300 rounded-lg">
-            <table class="w-full text-center text-sm border-collapse bg-white">
-                <thead>
-                    <tr class="bg-blue-900 text-white font-bold border-b border-gray-300">
-                        <th class="py-2 px-3 border-r border-gray-300" colspan="2">GDTC 1</th>
-                        <th class="py-2 px-3 border-r border-gray-300" colspan="2">GDTC 2</th>
-                        <th class="py-2 px-3 border-r border-gray-300" colspan="2">GDTC 3</th>
-                        <th class="py-2 px-3 border-r border-gray-300" colspan="2">GDTC 4</th>
-                        <th class="py-2 px-3 border-r border-gray-300 bg-blue-950" rowspan="2">TB Chung</th>
-                        <th class="py-2 px-3 bg-amber-600" rowspan="2">Xếp loại</th>
-                    </tr>
-                    <tr class="bg-blue-800 text-gray-100 text-xs border-b border-gray-300">
-                        <th class="py-1 px-2 border-r border-gray-300">Số</th><th class="py-1 px-2 border-r border-gray-300">Chữ</th>
-                        <th class="py-1 px-2 border-r border-gray-300">Số</th><th class="py-1 px-2 border-r border-gray-300">Chữ</th>
-                        <th class="py-1 px-2 border-r border-gray-300">Số</th><th class="py-1 px-2 border-r border-gray-300">Chữ</th>
-                        <th class="py-1 px-2 border-r border-gray-300">Số</th><th class="py-1 px-2 border-r border-gray-300">Chữ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="font-medium text-gray-900 bg-gray-50">
-                        <td id="g1_so" class="py-2 border-r border-gray-300 font-bold">--</td><td id="g1_chu" class="py-2 border-r border-gray-300 text-gray-600">--</td>
-                        <td id="g2_so" class="py-2 border-r border-gray-300 font-bold">--</td><td id="g2_chu" class="py-2 border-r border-gray-300 text-gray-600">--</td>
-                        <td id="g3_so" class="py-2 border-r border-gray-300 font-bold">--</td><td id="g3_chu" class="py-2 border-r border-gray-300 text-gray-600">--</td>
-                        <td id="g4_so" class="py-2 border-r border-gray-300 font-bold">--</td><td id="g4_chu" class="py-2 border-r border-gray-300 text-gray-600">--</td>
-                        <td id="tbinh" class="py-2 border-r border-gray-300 bg-blue-50 font-bold text-blue-700 text-base">--</td>
-                        <td id="xeploai" class="py-2 bg-amber-50 font-bold text-amber-700 text-base">--</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-
-    <div id="excelPrintTemplate">
-        <table style="width: 100%; border: none; margin-bottom: 12px; border-collapse: collapse;">
-            <tr style="border: none;">
-                <td style="width: 45%; text-align: center; vertical-align: top; border: none; padding: 0;">
-                    <div style="font-size: 13pt; font-family: 'Times New Roman';">ĐẠI HỌC ĐÀ NẴNG</div>
-                    <div style="font-size: 13pt; font-weight: bold; font-family: 'Times New Roman';">KHOA GIÁO DỤC THỂ CHẤT</div>
-                </td>
-                <td style="width: 55%; text-align: center; vertical-align: top; border: none; padding: 0;">
-                    <div style="font-size: 13pt; font-weight: bold; font-family: 'Times New Roman';">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-                    <div style="font-size: 13pt; font-weight: bold; font-family: 'Times New Roman'; text-decoration: underline; text-underline-offset: 5px;">Độc lập - Tự do - Hạnh phúc</div>
-                </td>
-            </tr>
-            <tr style="border: none;">
-                <td style="border: none;"></td>
-                <td style="text-align: center; border: none; padding-top: 10px; font-style: italic; font-size: 12pt; font-family: 'Times New Roman';">
-                    Đà Nẵng, ngày &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tháng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; năm 2026
-                </td>
-            </tr>
-        </table>
-
-        <div style="text-align: center; margin-top: 25px; margin-bottom: 25px; font-family: 'Times New Roman';">
-            <div style="font-size: 16pt; font-weight: bold;">KẾT QUẢ HỌC TẬP</div>
-            <div style="font-size: 14pt; font-weight: bold;">MÔN HỌC GIÁO DỤC THỂ CHẤT</div>
+        <div class="text-right text-xs italic mb-6 mr-4">
+            Đà Nẵng, ngày <span id="print_ngay">...</span> tháng <span id="print_thang">...</span> năm 2026
         </div>
 
-        <table style="width: 100%; border: none; font-size: 13pt; font-family: 'Times New Roman'; border-collapse: collapse; margin-bottom: 5px;">
-            <tr style="border: none;">
-                <td style="border: none; text-align: left; padding: 3px 0; width: 65%;">
-                    Họ và tên sinh viên: <span id="print_hoten" style="font-weight: bold;">--</span>
-                </td>
-                <td style="border: none; text-align: left; padding: 3px 0; width: 35%;">
-                    Lớp: <span id="print_lopsh" style="font-weight: bold;">--</span>
-                </td>
-            </tr>
-            <tr style="border: none;">
-                <td style="border: none; text-align: left; padding: 3px 0;" colspan="2">
-                    Mã sinh viên: <span id="print_masv" style="font-weight: bold; font-family: monospace;">--</span>
-                </td>
-            </tr>
-            <tr style="border: none;">
-                <td style="border: none; text-align: left; padding: 3px 0; font-weight: bold; text-transform: uppercase;" id="print_truong" colspan="2">
-                    --
-                </td>
-            </tr>
-        </table>
-
-        <div style="font-size: 13pt; font-family: 'Times New Roman'; text-align: justify; margin-bottom: 15px; line-height: 1.5;">
-            Đã hoàn thành môn học Giáo dục thể chất theo Quyết định số <span id="print_qdinh" style="font-weight: bold;">--</span> của Giám đốc Đại học Đà Nẵng với kết quả:
+        <div class="text-center mb-8">
+            <h2 class="text-xl font-bold uppercase tracking-wide">KẾT QUẢ HỌC TẬP</h2>
+            <p class="text-sm font-bold uppercase">MÔN HỌC GIÁO DỤC THỂ CHẤT</p>
         </div>
 
-        <table class="excel-grid-table">
+        <div class="text-sm space-y-2 mb-6 px-2">
+            <div class="flex justify-between">
+                <div>Họ và tên sinh viên: <span id="p_hoten" class="font-bold">...</span></div>
+                <div class="w-1/3">Lớp: <span id="p_lopsh" class="font-bold">...</span></div>
+            </div>
+            <div>Mã sinh viên: <span id="p_masv" class="font-bold font-mono">...</span></div>
+            <div id="p_truong" class="font-bold uppercase text-xs">...</div>
+            <div class="leading-relaxed text-justify">
+                Đã hoàn thành môn học Giáo dục thể chất theo Quyết định số <span id="p_qdinh" class="font-semibold">...</span> của Giám đốc Đại học Đà Nẵng với kết quả:
+            </div>
+        </div>
+
+        <table class="w-full text-center text-sm border-collapse excel-table mb-6">
             <thead>
-                <tr>
-                    <th rowspan="2" style="width: 40%;">HỌC PHẦN</th>
-                    <th rowspan="2" style="width: 12%;">SỐ<br>TÍN CHỈ</th>
-                    <th rowspan="2" style="width: 12%;">SỐ TIẾT</th>
-                    <th colspan="2" style="width: 24%;">ĐIỂM HỌC PHẦN</th>
-                    <th rowspan="2" style="width: 12%;">GHI CHÚ</th>
+                <tr class="font-bold">
+                    <th rowspan="2" class="w-[40%]">HỌC PHẦN</th>
+                    <th rowspan="2" class="w-[12%]">SỐ<br>TÍN CHỈ</th>
+                    <th rowspan="2" class="w-[12%]">SỐ TIẾT</th>
+                    <th colspan="2" class="w-[24%]">ĐIỂM HỌC PHẦN</th>
+                    <th rowspan="2" class="w-[12%]">GHI CHÚ</th>
                 </tr>
-                <tr>
-                    <th style="font-size: 11pt; font-weight: normal; padding: 3px;">Số</th>
-                    <th style="font-size: 11pt; font-weight: normal; padding: 3px;">Chữ</th>
+                <tr class="font-bold">
+                    <th>Số</th>
+                    <th>Chữ</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="text-left-excel">Giáo dục thể chất 1</td>
+                    <td class="text-left font-medium">Giáo dục thể chất 1</td>
                     <td>1</td>
                     <td>30</td>
-                    <td id="print_g1_so" style="font-weight: bold;">--</td>
-                    <td id="print_g1_chu">--</td>
+                    <td id="p_g1_so" class="font-bold"></td>
+                    <td id="p_g1_chu"></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-left-excel">Giáo dục thể chất 2</td>
+                    <td class="text-left font-medium">Giáo dục thể chất 2</td>
                     <td>1</td>
                     <td>30</td>
-                    <td id="print_g2_so" style="font-weight: bold;">--</td>
-                    <td id="print_g2_chu">--</td>
+                    <td id="p_g2_so" class="font-bold"></td>
+                    <td id="p_g2_chu"></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-left-excel">Giáo dục thể chất 3</td>
+                    <td class="text-left font-medium">Giáo dục thể chất 3</td>
                     <td>1</td>
                     <td>30</td>
-                    <td id="print_g3_so" style="font-weight: bold;">--</td>
-                    <td id="print_g3_chu">--</td>
+                    <td id="p_g3_so" class="font-bold"></td>
+                    <td id="p_g3_chu"></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-left-excel">Giáo dục thể chất 4</td>
+                    <td class="text-left font-medium">Giáo dục thể chất 4</td>
                     <td>1</td>
                     <td>30</td>
-                    <td id="print_g4_so" style="font-weight: bold;">--</td>
-                    <td id="print_g4_chu">--</td>
+                    <td id="p_g4_so" class="font-bold"></td>
+                    <td id="p_g4_chu"></td>
                     <td></td>
                 </tr>
-                <tr>
-                    <td colspan="6" class="text-left-excel" style="font-weight: bold; font-size: 12.5pt; padding: 10px 8px;">
-                        ĐIỂM TRUNG BÌNH CHUNG: <span id="print_tbinh" style="margin-right: 40px;">--</span> 
-                        XẾP LOẠI: <span id="print_xeploai">--</span>
-                    </td>
+                <tr class="font-bold bg-gray-50">
+                    <td colspan="3" class="text-left font-bold uppercase">Điểm trung bình chung: <span id="p_tbinh"></span></td>
+                    <td colspan="3" class="text-left font-bold uppercase px-4">Xếp loại: <span id="p_xeploai"></span></td>
                 </tr>
             </tbody>
         </table>
@@ -290,7 +263,7 @@
 
     <script>
         // ==========================================
-        // ĐƯỜNG DẪN KẾT NỐI ĐẾN GOOGLE SHEET DỮ LIỆU GỐC
+        // CẤU HÌNH LIÊN KẾT ĐÁM MÂY GOOGLE SHEETS
         // ==========================================
         const SPREADSHEET_ID = '1n9Hg1Nz81lfShOu0qgnAIVkfuWgfN60_daPvbXZJJuU';
         const SHEET_NAME = 'GDTC'; 
@@ -305,51 +278,53 @@
         const profileForm = document.getElementById("profileForm");
         const notFoundState = document.getElementById("notFoundState");
 
-        // Các biến map với Giao diện xem trước trên Web
         const masv = document.getElementById("masv"); const hoten = document.getElementById("hoten");
         const nsinh = document.getElementById("nsinh"); const lopsh = document.getElementById("lopsh");
         const khoa = document.getElementById("khoa"); const truong = document.getElementById("truong");
         const qdinh = document.getElementById("qdinh");
+
         const g1_so = document.getElementById("g1_so"); const g1_chu = document.getElementById("g1_chu");
         const g2_so = document.getElementById("g2_so"); const g2_chu = document.getElementById("g2_chu");
         const g3_so = document.getElementById("g3_so"); const g3_chu = document.getElementById("g3_chu");
         const g4_so = document.getElementById("g4_so"); const g4_chu = document.getElementById("g4_chu");
-        const tbinh = document.getElementById("tbinh"); const xeploai = document.getElementById("xeploai");
+        const tbinh = document.getElementById("tbinh");   const xeploai = document.getElementById("xeploai");
 
-        // Các biến map với Phôi in ẩn Excel (Dành riêng cho máy in)
-        const print_masv = document.getElementById("print_masv"); const print_hoten = document.getElementById("print_hoten");
-        const print_lopsh = document.getElementById("print_lopsh"); const print_truong = document.getElementById("print_truong");
-        const print_qdinh = document.getElementById("print_qdinh");
-        const print_g1_so = document.getElementById("print_g1_so"); const print_g1_chu = document.getElementById("print_g1_chu");
-        const print_g2_so = document.getElementById("print_g2_so"); const print_g2_chu = document.getElementById("print_g2_chu");
-        const print_g3_so = document.getElementById("print_g3_so"); const print_g3_chu = document.getElementById("print_g3_chu");
-        const print_g4_so = document.getElementById("print_g4_so"); const print_g4_chu = document.getElementById("print_g4_chu");
-        const print_tbinh = document.getElementById("print_tbinh"); const print_xeploai = document.getElementById("print_xeploai");
-
-        // Hàm định dạng ngày sinh dd/mm/yyyy
-        function formatDate(cell) {
-            if (!cell || !cell.v) return "--";
-            const val = cell.v;
-            if (typeof val === 'string' && val.includes('Date')) {
-                const matches = val.match(/\d+/g);
-                if (matches && matches.length >= 3) {
-                    const year = matches[0];
-                    const month = String(parseInt(matches[1]) + 1).padStart(2, '0');
-                    const day = String(matches[2]).padStart(2, '0');
-                    return `${day}/${month}/${year}`;
-                }
-            }
-            if (cell.f) return cell.f;
-            return val;
-        }
+        // Các biến map dữ liệu sang phôi Excel khi bấm in
+        const p_masv = document.getElementById("p_masv"); const p_hoten = document.getElementById("p_hoten");
+        const p_lopsh = document.getElementById("p_lopsh"); const p_truong = document.getElementById("p_truong");
+        const p_qdinh = document.getElementById("p_qdinh");
+        const p_g1_so = document.getElementById("p_g1_so"); const p_g1_chu = document.getElementById("p_g1_chu");
+        const p_g2_so = document.getElementById("p_g2_so"); const p_g2_chu = document.getElementById("p_g2_chu");
+        const p_g3_so = document.getElementById("p_g3_so"); const p_g3_chu = document.getElementById("p_g3_chu");
+        const p_g4_so = document.getElementById("p_g4_so"); const p_g4_chu = document.getElementById("p_g4_chu");
+        const p_tbinh = document.getElementById("p_tbinh"); const p_xeploai = document.getElementById("p_xeploai");
 
         function getVal(cell) {
             if (!cell) return "--";
             return cell.f !== undefined ? cell.f : (cell.v !== undefined ? cell.v : "--");
         }
 
+        function formatDate(cell) {
+            if (!cell || cell.v === undefined) return "--";
+            let valStr = String(cell.v);
+
+            if (valStr.includes("Date(")) {
+                let matches = valStr.match(/\d+/g);
+                if (matches && matches.length >= 3) {
+                    let y = matches[0];
+                    let m = String(Number(matches[1]) + 1).padStart(2, '0');
+                    let d = String(matches[2]).padStart(2, '0');
+                    return `${d}/${m}/${y}`;
+                }
+            }
+            if (cell.f) return cell.f;
+            return valStr;
+        }
+
         async function executeSearch() {
             const query = studentIdInput.value.trim().toUpperCase();
+            studentIdInput.value = ""; 
+
             if (query === "") { switchState('default'); return; }
 
             switchState('loading');
@@ -366,38 +341,44 @@
                 if (data.table.rows.length > 0) {
                     const cols = data.table.rows[0].c;
                     
+                    // Điền dữ liệu lên giao diện web xem trước
+                    masv.textContent = getVal(cols[1]);
                     const ho = cols[2] ? (cols[2].v || "") : "";
                     const ten = cols[3] ? (cols[3].v || "") : "";
-                    const full_name = (ho + " " + ten).trim() || "--";
-
-                    // 1. Đổ dữ liệu vào Giao diện xem trước trên Web gốc của bạn
-                    masv.textContent = getVal(cols[1]); 
-                    hoten.textContent = full_name;
+                    hoten.textContent = (ho + " " + ten).trim() || "--";
                     nsinh.textContent = formatDate(cols[4]);
-                    lopsh.textContent = getVal(cols[5]); 
+                    lopsh.textContent = getVal(cols[5]);
                     khoa.textContent = getVal(cols[6]);
-                    truong.textContent = getVal(cols[19]); 
-                    qdinh.textContent = getVal(cols[18]); 
                     
                     g1_so.textContent = getVal(cols[7]); g1_chu.textContent = getVal(cols[8]);
                     g2_so.textContent = getVal(cols[9]); g2_chu.textContent = getVal(cols[10]);
                     g3_so.textContent = getVal(cols[11]); g3_chu.textContent = getVal(cols[12]);
                     g4_so.textContent = getVal(cols[13]); g4_chu.textContent = getVal(cols[14]);
-                    tbinh.textContent = getVal(cols[15]); 
-                    xeploai.textContent = getVal(cols[16]);
-
-                    // 2. Đồng bộ song song dữ liệu sang phôi Excel dành riêng cho lệnh in
-                    print_masv.textContent = getVal(cols[1]);
-                    print_hoten.textContent = full_name;
-                    print_lopsh.textContent = getVal(cols[5]);
-                    print_truong.textContent = getVal(cols[19]);
-                    print_qdinh.textContent = getVal(cols[18]);
                     
-                    print_g1_so.textContent = getVal(cols[7]); print_g1_chu.textContent = getVal(cols[8]);
-                    print_g2_so.textContent = getVal(cols[9]); print_g2_chu.textContent = getVal(cols[10]);
-                    print_g3_so.textContent = getVal(cols[11]); print_g3_chu.textContent = getVal(cols[12]);
-                    print_g4_so.textContent = getVal(cols[13]); print_g4_chu.textContent = getVal(cols[14]);
-                    print_tbinh.textContent = getVal(cols[15]); print_xeploai.textContent = getVal(cols[16]);
+                    tbinh.textContent = getVal(cols[15]);
+                    xeploai.textContent = getVal(cols[16]);
+                    qdinh.textContent = getVal(cols[18]);
+                    truong.textContent = getVal(cols[19]);
+
+                    // Nạp dữ liệu đồng bộ sang phôi Excel để chuẩn bị in ấn công văn
+                    p_masv.textContent = masv.textContent;
+                    p_hoten.textContent = hoten.textContent;
+                    p_lopsh.textContent = lopsh.textContent;
+                    p_truong.textContent = truong.textContent;
+                    p_qdinh.textContent = qdinh.textContent;
+
+                    p_g1_so.textContent = g1_so.textContent; p_g1_chu.textContent = g1_chu.textContent;
+                    p_g2_so.textContent = g2_so.textContent; p_g2_chu.textContent = g2_chu.textContent;
+                    p_g3_so.textContent = g3_so.textContent; p_g3_chu.textContent = g3_chu.textContent;
+                    p_g4_so.textContent = g4_so.textContent; p_g4_chu.textContent = g4_chu.textContent;
+                    
+                    p_tbinh.textContent = tbinh.textContent;
+                    p_xeploai.textContent = xeploai.textContent;
+
+                    // Cập nhật ngày in tự động theo thời gian thực tế
+                    const ngàyHiệnTại = new Date();
+                    document.getElementById("print_ngay").textContent = String(ngàyHiệnTại.getDate()).padStart(2, '0');
+                    document.getElementById("print_thang").textContent = String(ngàyHiệnTại.getMonth() + 1).padStart(2, '0');
 
                     switchState('profile');
                 } else {
@@ -422,7 +403,7 @@
             searchBtn.addEventListener("click", executeSearch);
             studentIdInput.addEventListener("keydown", (e) => { if (e.key === "Enter") executeSearch(); });
             
-            // Xử lý gọi hộp thoại in ấn phần cứng khi bấm nút
+            // Lắng nghe sự kiện kích chuột vào nút In
             printBtn.addEventListener("click", () => {
                 window.print();
             });
