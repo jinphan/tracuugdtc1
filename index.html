@@ -7,21 +7,21 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* MẶC ĐỊNH TRÊN TRANG WEB: ẨN BIỂU MẪU IN */
+        /* MẶC ĐỊNH TRÊN TRANG WEB: ẨN BIỂU MẪU IN ĐỂ KHÔNG BỊ RÁC GIAO DIỆN */
         #printTemplate {
             display: none;
         }
 
         /* ==========================================
-           CẤU HÌNH CSS PRINT: ĐỂ XUẤT FILE PDF THEO MẪU EXCEL
+           CẤU HÌNH CSS PRINT CHUẨN XÁC THEO MẪU EXCEL
            ========================================== */
         @media print {
-            /* Ẩn toàn bộ giao diện tra cứu web thông thường */
+            /* Ẩn giao diện tra cứu web thông thường nền xám */
             body * {
                 display: none !important;
             }
             
-            /* Chỉ hiển thị duy nhất vùng biểu mẫu in ấn */
+            /* Chỉ hiển thị vùng biểu mẫu in ấn */
             #printTemplate, #printTemplate * {
                 display: block !important;
             }
@@ -39,9 +39,9 @@
                 display: table-row-group !important;
             }
 
-            /* Định dạng trang giấy in */
+            /* Cấu hình trang giấy A4 dọc */
             @page {
-                size: A4;
+                size: A4 portrait;
                 margin: 20mm 15mm 20mm 20mm;
             }
 
@@ -50,12 +50,12 @@
                 color: #000 !important;
                 font-family: "Times New Roman", Times, serif !important;
                 font-size: 13pt !important;
-                line-height: 1.4 !important;
+                line-height: 1.5 !important;
                 margin: 0 !important;
                 padding: 0 !important;
             }
 
-            /* Cấu trúc bảng điểm theo chuẩn Excel */
+            /* Định dạng bảng điểm chuẩn lưới ô của Excel */
             .excel-table {
                 width: 100% !important;
                 border-collapse: collapse !important;
@@ -64,15 +64,13 @@
             }
             .excel-table th, .excel-table td {
                 border: 1px solid #000 !important;
-                padding: 6px 8px !important;
+                padding: 5px 8px !important;
                 text-align: center !important;
                 font-size: 12pt !important;
+                background-color: transparent !important;
             }
             .excel-table th {
                 font-weight: bold !important;
-                background-color: #f2f2f2 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
             }
             .text-left-important {
                 text-align: left !important;
@@ -210,62 +208,67 @@
 
 
     <div id="printTemplate">
-        <table style="width: 100%; border: none; margin-bottom: 20px;">
-            <tr>
+        <table style="width: 100%; border: none; margin-bottom: 10px; border-collapse: collapse;">
+            <tr style="border: none;">
                 <td style="width: 45%; text-align: center; vertical-align: top; border: none; padding: 0;">
-                    <div style="font-family: 'Times New Roman'; font-size: 12pt; text-transform: uppercase;">ĐẠI HỌC ĐÀ NẴNG</div>
-                    <div style="font-family: 'Times New Roman'; font-size: 12pt; font-weight: bold; text-transform: uppercase; text-decoration: underline;">KHOA GIÁO DỤC THỂ CHẤT</div>
+                    <div style="font-size: 13pt;">ĐẠI HỌC ĐÀ NẴNG</div>
+                    <div style="font-size: 13pt; font-weight: bold;">KHOA GIÁO DỤC THỂ CHẤT</div>
                 </td>
                 <td style="width: 55%; text-align: center; vertical-align: top; border: none; padding: 0;">
-                    <div style="font-family: 'Times New Roman'; font-size: 12pt; font-weight: bold;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-                    <div style="font-family: 'Times New Roman'; font-size: 12pt; font-weight: bold; text-decoration: underline;">Độc lập - Tự do - Hạnh phúc</div>
-                    <div id="print_ngaythang" style="font-family: 'Times New Roman'; font-style: italic; font-size: 11pt; margin-top: 10px;">Đà Nẵng, ngày &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tháng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; năm 2026</div>
+                    <div style="font-size: 13pt; font-weight: bold;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+                    <div style="font-size: 13pt; font-weight: bold; text-decoration: underline; text-underline-offset: 4px;">Độc lập - Tự do - Hạnh phúc</div>
+                </td>
+            </tr>
+            <tr style="border: none;">
+                <td style="border: none;"></td>
+                <td style="text-align: center; border: none; padding-top: 10px; font-style: italic; font-size: 12pt;">
+                    Đà Nẵng, ngày &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tháng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; năm 2026
                 </td>
             </tr>
         </table>
 
         <div style="text-align: center; margin-top: 25px; margin-bottom: 25px;">
-            <div style="font-family: 'Times New Roman'; font-size: 16pt; font-weight: bold; text-transform: uppercase; tracking-wide">KẾT QUẢ HỌC TẬP</div>
-            <div style="font-family: 'Times New Roman'; font-size: 14pt; font-weight: bold; text-transform: uppercase;">MÔN HỌC GIÁO DỤC THỂ CHẤT</div>
+            <div style="font-size: 16pt; font-weight: bold;">KẾT QUẢ HỌC TẬP</div>
+            <div style="font-size: 14pt; font-weight: bold;">MÔN HỌC GIÁO DỤC THỂ CHẤT</div>
         </div>
 
-        <table style="width: 100%; border: none; font-family: 'Times New Roman'; font-size: 13pt; margin-bottom: 15px; border-collapse: collapse;">
+        <table style="width: 100%; border: none; font-size: 13pt; border-collapse: collapse; margin-bottom: 5px;">
             <tr style="border: none;">
-                <td style="border: none; text-align: left; padding: 4px 0; width: 65%;">
-                    Họ và tên sinh viên: <span id="p_hoten" style="font-weight: bold;">--</span>
+                <td style="border: none; text-align: left; padding: 3px 0; width: 65%;">
+                    Họ và tên sinh viên: <span id="p_hoten">--</span>
                 </td>
-                <td style="border: none; text-align: left; padding: 4px 0; width: 35%;">
-                    Lớp: <span id="p_lopsh" style="font-weight: bold;">--</span>
-                </td>
-            </tr>
-            <tr style="border: none;">
-                <td style="border: none; text-align: left; padding: 4px 0;" colspan="2">
-                    Mã sinh viên: <span id="p_masv" style="font-weight: bold; font-family: monospace;">--</span>
+                <td style="border: none; text-align: left; padding: 3px 0; width: 35%;">
+                    Lớp: <span id="p_lopsh">--</span>
                 </td>
             </tr>
             <tr style="border: none;">
-                <td style="border: none; text-align: left; padding: 4px 0; font-weight: bold; text-transform: uppercase;" id="p_truong" colspan="2">
+                <td style="border: none; text-align: left; padding: 3px 0;" colspan="2">
+                    Mã sinh viên: <span id="p_masv">--</span>
+                </td>
+            </tr>
+            <tr style="border: none;">
+                <td style="border: none; text-align: left; padding: 3px 0;" id="p_truong" colspan="2">
                     --
                 </td>
             </tr>
         </table>
 
-        <div style="font-family: 'Times New Roman'; font-size: 13pt; text-align: justify; margin-bottom: 15px; text-indent: 10px;">
-            Đã hoàn thành môn học Giáo dục thể chất theo Quyết định số <span id="p_qdinh" style="font-weight: bold;">--</span> của Giám đốc Đại học Đà Nẵng với kết quả:
+        <div style="font-size: 13pt; text-align: justify; margin-bottom: 15px;">
+            Đã hoàn thành môn học Giáo dục thể chất theo Quyết định số <span id="p_qdinh">--</span> của Giám đốc Đại học Đà Nẵng với kết quả:
         </div>
 
         <table class="excel-table">
             <thead>
                 <tr>
-                    <th rowspan="2" style="width: 35%;">HỌC PHẦN</th>
-                    <th rowspan="2" style="width: 12%;">SỐ TÍN CHỈ</th>
+                    <th rowspan="2" style="width: 40%;">HỌC PHẦN</th>
+                    <th rowspan="2" style="width: 12%;">SỐ<br>TÍN CHỈ</th>
                     <th rowspan="2" style="width: 12%;">SỐ TIẾT</th>
-                    <th colspan="2" style="width: 26%;">ĐIỂM HỌC PHẦN</th>
-                    <th rowspan="2" style="width: 15%;">GHI CHÚ</th>
+                    <th colspan="2" style="width: 24%;">ĐIỂM HỌC PHẦN</th>
+                    <th rowspan="2" style="width: 12%;">GHI CHÚ</th>
                 </tr>
                 <tr>
-                    <th style="font-size: 11pt; padding: 3px;">Số</th>
-                    <th style="font-size: 11pt; padding: 3px;">Chữ</th>
+                    <th style="font-size: 11pt; font-weight: normal; padding: 2px;">Số</th>
+                    <th style="font-size: 11pt; font-weight: normal; padding: 2px;">Chữ</th>
                 </tr>
             </thead>
             <tbody>
@@ -273,7 +276,7 @@
                     <td class="text-left-important">Giáo dục thể chất 1</td>
                     <td>1</td>
                     <td>30</td>
-                    <td id="p_g1_so" style="font-weight: bold;">--</td>
+                    <td id="p_g1_so">--</td>
                     <td id="p_g1_chu">--</td>
                     <td></td>
                 </tr>
@@ -281,7 +284,7 @@
                     <td class="text-left-important">Giáo dục thể chất 2</td>
                     <td>1</td>
                     <td>30</td>
-                    <td id="p_g2_so" style="font-weight: bold;">--</td>
+                    <td id="p_g2_so">--</td>
                     <td id="p_g2_chu">--</td>
                     <td></td>
                 </tr>
@@ -289,7 +292,7 @@
                     <td class="text-left-important">Giáo dục thể chất 3</td>
                     <td>1</td>
                     <td>30</td>
-                    <td id="p_g3_so" style="font-weight: bold;">--</td>
+                    <td id="p_g3_so">--</td>
                     <td id="p_g3_chu">--</td>
                     <td></td>
                 </tr>
@@ -297,16 +300,14 @@
                     <td class="text-left-important">Giáo dục thể chất 4</td>
                     <td>1</td>
                     <td>30</td>
-                    <td id="p_g4_so" style="font-weight: bold;">--</td>
+                    <td id="p_g4_so">--</td>
                     <td id="p_g4_chu">--</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td colspan="3" class="text-left-important" style="font-weight: bold; text-transform: uppercase;">
-                        ĐIỂM TRUNG BÌNH CHUNG: <span id="p_tbinh" style="float: right; margin-right: 15px;">--</span>
-                    </td>
-                    <td colspan="3" class="text-left-important" style="font-weight: bold; text-transform: uppercase; border-left: none;">
-                        XẾP LOẠI: <span id="p_xeploai" style="margin-left: 10px;">--</span>
+                    <td colspan="6" class="text-left-important" style="font-weight: bold; font-size: 12pt; padding: 8px;">
+                        ĐIỂM TRUNG BÌNH CHUNG: <span id="p_tbinh" style="margin-right: 30px;">--</span> 
+                        XẾP LOẠI: <span id="p_xeploai">--</span>
                     </td>
                 </tr>
             </tbody>
@@ -329,7 +330,7 @@
         const profileForm = document.getElementById("profileForm");
         const notFoundState = document.getElementById("notFoundState");
 
-        // Element trên Web giao diện nền xám
+        // Giao diện web chính
         const masv = document.getElementById("masv"); const hoten = document.getElementById("hoten");
         const nsinh = document.getElementById("nsinh"); const lopsh = document.getElementById("lopsh");
         const khoa = document.getElementById("khoa"); const truong = document.getElementById("truong");
@@ -340,7 +341,7 @@
         const g4_so = document.getElementById("g4_so"); const g4_chu = document.getElementById("g4_chu");
         const tbinh = document.getElementById("tbinh");   const xeploai = document.getElementById("xeploai");
 
-        // Element map dữ liệu sang Biểu mẫu in chuẩn Excel (Times New Roman)
+        // Khung biểu mẫu Excel khi xuất PDF
         const p_masv = document.getElementById("p_masv"); const p_hoten = document.getElementById("p_hoten");
         const p_lopsh = document.getElementById("p_lopsh"); const p_truong = document.getElementById("p_truong");
         const p_qdinh = document.getElementById("p_qdinh");
@@ -389,12 +390,11 @@
                 if (data.table.rows.length > 0) {
                     const cols = data.table.rows[0].c;
                     
-                    // Đọc chuỗi họ và tên đầy đủ
                     const ho = cols[2] ? (cols[2].v || "") : "";
                     const ten = cols[3] ? (cols[3].v || "") : "";
                     const full_name = (ho + " " + ten).trim() || "--";
 
-                    // 1. Đẩy dữ liệu ra giao diện Web tra cứu chính
+                    // 1. Đẩy lên UI Web nền xám
                     masv.textContent = getVal(cols[1]); 
                     hoten.textContent = full_name;
                     nsinh.textContent = formatDate(cols[4]); 
@@ -405,18 +405,18 @@
                     g3_so.textContent = getVal(cols[11]); g3_chu.textContent = getVal(cols[12]);
                     g4_so.textContent = getVal(cols[13]); g4_chu.textContent = getVal(cols[14]);
                     tbinh.textContent = getVal(cols[15]); xeploai.textContent = getVal(cols[16]);
-                    qdinh.textContent = getVal(cols[18]); 
-                    truong.textContent = getVal(cols[19]); 
+                    qdinh.textContent = getVal(cols[17]); 
+                    truong.textContent = getVal(cols[18]); 
 
-                    // 2. Đẩy song song dữ liệu vào Biểu mẫu in Excel (Mẫu văn bản)
+                    // 2. Đồng bộ sang cấu trúc biểu mẫu in ấn Excel mẫu
                     p_masv.textContent = getVal(cols[1]);
                     p_hoten.textContent = full_name;
                     p_lopsh.textContent = getVal(cols[5]);
-                    p_truong.textContent = getVal(cols[19]);
-                    p_qdinh.textContent = getVal(cols[18]);
+                    p_truong.textContent = getVal(cols[18]);
+                    p_qdinh.textContent = getVal(cols[17]);
                     p_g1_so.textContent = getVal(cols[7]); p_g1_chu.textContent = getVal(cols[8]);
                     p_g2_so.textContent = getVal(cols[9]); p_g2_chu.textContent = getVal(cols[10]);
-                    p_p_g3_so = p_g3_so.textContent = getVal(cols[11]); p_g3_chu.textContent = getVal(cols[12]);
+                    p_g3_so.textContent = getVal(cols[11]); p_g3_chu.textContent = getVal(cols[12]);
                     p_g4_so.textContent = getVal(cols[13]); p_g4_chu.textContent = getVal(cols[14]);
                     p_tbinh.textContent = getVal(cols[15]); p_xeploai.textContent = getVal(cols[16]);
 
@@ -443,7 +443,7 @@
             searchBtn.addEventListener("click", executeSearch);
             studentIdInput.addEventListener("keydown", (e) => { if (e.key === "Enter") executeSearch(); });
             
-            // Xử lý sự kiện mở hộp thoại in biểu mẫu hệ thống
+            // Kích hoạt lệnh in file của hệ thống
             printBtn.addEventListener("click", () => {
                 window.print();
             });
