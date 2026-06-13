@@ -180,15 +180,19 @@
     <div id="excelPrintTemplate" class="hidden bg-white text-black font-serif p-2 mx-auto" style="font-family: 'Times New Roman', Times, serif;">
         
         <div class="flex justify-between items-start text-sm font-bold mb-2">
-            <div class="text-center">
-                <p class="uppercase text-[13px] tracking-tight">ĐẠI HỌC ĐÀ NẴNG</p>
-                <p class="uppercase text-[12px] underline decoration-solid underline-offset-4 font-black">KHOA GIÁO DỤC THỂ CHẤT</p>
-            </div>
-            <div class="text-center">
-                <p class="uppercase text-[13px] tracking-tight">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
-                <p class="text-[12px] underline decoration-solid underline-offset-4 font-bold">Độc lập - Tự do - Hạnh phúc</p>
-            </div>
-        </div>
+    <div class="text-center flex flex-col items-center">
+        <p class="uppercase text-[13px] tracking-tight">ĐẠI HỌC ĐÀ NẴNG</p>
+        <p class="uppercase text-[12px] font-black">KHOA GIÁO DỤC THỂ CHẤT</p>
+        <!-- Đường gạch ngắn bằng 1/2 chiều dài chữ và căn giữa -->
+        <div class="w-16 border-t border-black mt-1" style="border-top-color: #000000 !important;"></div>
+    </div>
+    <div class="text-center flex flex-col items-center">
+        <p class="uppercase text-[13px] tracking-tight">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+        <p class="text-[12px] font-bold">Độc lập - Tự do - Hạnh phúc</p>
+        <!-- Đường gạch ngắn bằng khoảng 2/3 chiều dài chữ và căn giữa -->
+        <div class="w-24 border-t border-black mt-1" style="border-top-color: #000000 !important;"></div>
+    </div>
+</div>
 
         <div class="text-right text-[13px] italic mb-6 pr-4 whitespace-nowrap">
             Đà Nẵng, ngày <span id="print_ngay">...</span> tháng <span id="print_thang">...</span> năm 2026
@@ -214,7 +218,7 @@
         <table class="w-full text-center text-[14px] border-collapse excel-table mb-6">
             <thead>
                 <tr class="font-bold">
-                    <th rowspan="2" class="w-[40%] py-2">HỌC PHẦN</th>
+                    <th rowspan="2" class="w-[35%] py-2">HỌC PHẦN</th>
                     <th rowspan="2" class="w-[12%]">SỐ TÍN CHỈ</th>
                     <th rowspan="2" class="w-[12%]">SỐ TIẾT</th>
                     <th colspan="2" class="w-[24%]">ĐIỂM HỌC PHẦN</th>
@@ -227,7 +231,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td class="text-left px-3 py-2">Giáo dục thể chất 1</td>
+                    <td class="text-center px-3 py-2">Giáo dục thể chất 1</td>
                     <td>1</td>
                     <td>30</td>
                     <td id="p_g1_so" class="font-bold"></td>
@@ -235,7 +239,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-left px-3 py-2">Giáo dục thể chất 2</td>
+                    <td class="text-center px-3 py-2">Giáo dục thể chất 2</td>
                     <td>1</td>
                     <td>30</td>
                     <td id="p_g2_so" class="font-bold"></td>
@@ -243,7 +247,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-left px-3 py-2">Giáo dục thể chất 3</td>
+                    <td class="text-center px-3 py-2">Giáo dục thể chất 3</td>
                     <td>1</td>
                     <td>30</td>
                     <td id="p_g3_so" class="font-bold"></td>
@@ -251,7 +255,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-left px-3 py-2">Giáo dục thể chất 4</td>
+                    <td class="text-center px-3 py-2">Giáo dục thể chất 4</td>
                     <td>1</td>
                     <td>30</td>
                     <td id="p_g4_so" class="font-bold"></td>
