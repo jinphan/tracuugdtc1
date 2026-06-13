@@ -7,44 +7,48 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CẤU HÌNH PHỤC VỤ IN ẤN (PRINT CSS) THEO MẪU EXCEL */
+       /* CẤU HÌNH PHỤC VỤ IN ẤN (PRINT CSS) THEO MẪU EXCEL CHUẨN */
         @media print {
-            /* Ẩn hoàn toàn giao diện web */
             body * {
-                display: none !important;
+                visibility: hidden;
             }
-            /* Chỉ hiển thị duy nhất khung phôi in Excel */
             #excelPrintTemplate, #excelPrintTemplate * {
-                display: block !important;
-            }
-            #excelPrintTemplate table, #excelPrintTemplate table * {
-                display: table !important;
-            }
-            #excelPrintTemplate th, #excelPrintTemplate td {
-                display: table-cell !important;
+                visibility: visible;
             }
             #excelPrintTemplate {
                 position: absolute;
                 left: 0;
                 top: 0;
                 width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
+                display: block !important;
                 background: white !important;
                 color: black !important;
             }
-            /* Thiết lập trang in khổ A4 dọc */
+            /* Ép cấu trúc bảng giữ nguyên thuộc tính table khi in */
+            #excelPrintTemplate table {
+                display: table !important;
+                border-collapse: collapse !important;
+                width: 100% !important;
+            }
+            #excelPrintTemplate tr {
+                display: table-row !important;
+            }
+            #excelPrintTemplate th, #excelPrintTemplate td {
+                display: table-cell !important;
+                border: 1px solid #000000 !important;
+            }
             @page {
                 size: A4 portrait;
-                margin: 15mm 15mm 15mm 20mm; /* Căn lề chuẩn văn bản hành chính */
+                margin: 20mm 15mm 15mm 20mm;
             }
         }
 
-        /* Định dạng lưới ô nét mảnh chuẩn bộ khung Excel */
+        /* Thêm thuộc tính đảm bảo font chữ in ấn đều đặn mượt mà */
         .excel-table th, .excel-table td {
             border: 1px solid #000000 !important;
-            padding: 6px 8px;
+            padding: 8px 6px;
             vertical-align: middle;
+            font-family: "Times New Roman", Times, serif;
         }
     </style>
 </head>
@@ -173,56 +177,57 @@
         </div>
     </div>
 
-    <div id="excelPrintTemplate" class="hidden bg-white text-black font-serif p-2 mx-auto">
-        <div class="flex justify-between items-start text-sm font-bold mb-4">
+    <div id="excelPrintTemplate" class="hidden bg-white text-black font-serif p-2 mx-auto" style="font-family: 'Times New Roman', Times, serif;">
+        
+        <div class="flex justify-between items-start text-sm font-bold mb-2">
             <div class="text-center">
-                <p class="uppercase tracking-tight">ĐẠI HỌC ĐÀ NẴNG</p>
-                <p class="uppercase text-xs underline decoration-solid underline-offset-4 font-black">KHOA GIÁO DỤC THỂ CHẤT</p>
+                <p class="uppercase text-[13px] tracking-tight">ĐẠI HỌC ĐÀ NẴNG</p>
+                <p class="uppercase text-[12px] underline decoration-solid underline-offset-4 font-black">KHOA GIÁO DỤC THỂ CHẤT</p>
             </div>
             <div class="text-center">
-                <p class="uppercase tracking-tight">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
-                <p class="text-xs underline decoration-double underline-offset-4 font-bold">Độc lập - Tự do - Hạnh phúc</p>
+                <p class="uppercase text-[13px] tracking-tight">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+                <p class="text-[12px] underline decoration-solid underline-offset-4 font-bold">Độc lập - Tự do - Hạnh phúc</p>
             </div>
         </div>
 
-        <div class="text-right text-xs italic mb-6 mr-4">
+        <div class="text-right text-[13px] italic mb-6 pr-4 whitespace-nowrap">
             Đà Nẵng, ngày <span id="print_ngay">...</span> tháng <span id="print_thang">...</span> năm 2026
         </div>
 
-        <div class="text-center mb-8">
+        <div class="text-center mb-6">
             <h2 class="text-xl font-bold uppercase tracking-wide">KẾT QUẢ HỌC TẬP</h2>
             <p class="text-sm font-bold uppercase">MÔN HỌC GIÁO DỤC THỂ CHẤT</p>
         </div>
 
-        <div class="text-sm space-y-2 mb-6 px-2">
+        <div class="text-[14px] space-y-1.5 mb-4 px-2">
             <div class="flex justify-between">
                 <div>Họ và tên sinh viên: <span id="p_hoten" class="font-bold">...</span></div>
-                <div class="w-1/3">Lớp: <span id="p_lopsh" class="font-bold">...</span></div>
+                <div class="w-1/3 text-left">Lớp: <span id="p_lopsh" class="font-bold">...</span></div>
             </div>
             <div>Mã sinh viên: <span id="p_masv" class="font-bold font-mono">...</span></div>
-            <div id="p_truong" class="font-bold uppercase text-xs">...</div>
-            <div class="leading-relaxed text-justify mt-2">
+            <div id="p_truong" class="font-bold uppercase text-[12px]">...</div>
+            <div class="leading-relaxed text-justify pt-1">
                 Đã hoàn thành môn học Giáo dục thể chất theo Quyết định số <span id="p_qdinh" class="font-semibold">...</span> của Giám đốc Đại học Đà Nẵng với kết quả:
             </div>
         </div>
 
-        <table class="w-full text-center text-sm border-collapse excel-table mb-6">
+        <table class="w-full text-center text-[14px] border-collapse excel-table mb-6">
             <thead>
                 <tr class="font-bold">
-                    <th rowspan="2" class="w-[40%]">HỌC PHẦN</th>
-                    <th rowspan="2" class="w-[12%]">SỐ<br>TÍN CHỈ</th>
+                    <th rowspan="2" class="w-[40%] py-2">HỌC PHẦN</th>
+                    <th rowspan="2" class="w-[12%]">SỐ TÍN CHỈ</th>
                     <th rowspan="2" class="w-[12%]">SỐ TIẾT</th>
                     <th colspan="2" class="w-[24%]">ĐIỂM HỌC PHẦN</th>
                     <th rowspan="2" class="w-[12%]">GHI CHÚ</th>
                 </tr>
                 <tr class="font-bold">
-                    <th>Số</th>
-                    <th>Chữ</th>
+                    <th class="py-1">Số</th>
+                    <th class="py-1">Chữ</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="text-left font-medium">Giáo dục thể chất 1</td>
+                    <td class="text-left px-3 py-2">Giáo dục thể chất 1</td>
                     <td>1</td>
                     <td>30</td>
                     <td id="p_g1_so" class="font-bold"></td>
@@ -230,7 +235,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-left font-medium">Giáo dục thể chất 2</td>
+                    <td class="text-left px-3 py-2">Giáo dục thể chất 2</td>
                     <td>1</td>
                     <td>30</td>
                     <td id="p_g2_so" class="font-bold"></td>
@@ -238,7 +243,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-left font-medium">Giáo dục thể chất 3</td>
+                    <td class="text-left px-3 py-2">Giáo dục thể chất 3</td>
                     <td>1</td>
                     <td>30</td>
                     <td id="p_g3_so" class="font-bold"></td>
@@ -246,7 +251,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-left font-medium">Giáo dục thể chất 4</td>
+                    <td class="text-left px-3 py-2">Giáo dục thể chất 4</td>
                     <td>1</td>
                     <td>30</td>
                     <td id="p_g4_so" class="font-bold"></td>
@@ -254,11 +259,20 @@
                     <td></td>
                 </tr>
                 <tr class="font-bold">
-                    <td colspan="3" class="text-left font-bold uppercase">Điểm trung bình chung: <span id="p_tbinh"></span></td>
-                    <td colspan="3" class="text-left font-bold uppercase px-4">Xếp loại: <span id="p_xeploai"></span></td>
+                    <td colspan="3" class="text-center py-2 uppercase font-bold">Điểm trung bình chung: <span id="p_tbinh"></span></td>
+                    <td colspan="3" class="text-center py-2 uppercase font-bold">Xếp loại: <span id="p_xeploai"></span></td>
                 </tr>
             </tbody>
         </table>
+
+        <div class="mt-8 flex justify-end text-center">
+            <div class="w-1/2 text-[14px]">
+                <p class="font-bold uppercase tracking-tight">KT. TRƯỞNG KHOA</p>
+                <p class="font-bold uppercase text-[13px] mb-20">PHÓ TRƯỞNG KHOA</p>
+                <p class="font-bold text-[15px]">PGS.TS. Nguyễn Thanh Tùng</p>
+            </div>
+        </div>
+
     </div>
 
     <script>
