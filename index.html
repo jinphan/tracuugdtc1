@@ -60,24 +60,25 @@
             TRANG TRA CỨU SINH VIÊN HOÀN THÀNH GDTC
         </h1>
 
-        <div class="space-y-2 mb-8">
-            <label for="studentIdInput" class="block font-bold text-gray-700 text-sm sm:text-base">
-                Nhập mã sinh viên:
-            </label>
-            <div class="flex gap-2">
-                <input 
-                    type="text" 
-                    id="studentIdInput" 
-                    placeholder="..." 
-                    class="w-68 px-3 py-2 border border-gray-300 rounded-xl focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none uppercase font-mono tracking-wider text-gray-900 text-sm sm:text-base"
-                >
-                <button 
-                    id="searchBtn" 
-                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-sm transition-colors cursor-pointer flex items-center gap-2 shrink-0 text-sm sm:text-base"
-                >
-                    <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
-                </button>
-            </div>
+  <div class="flex items-center gap-3">
+    <label for="studentIdInput" class="font-bold text-gray-700 text-sm sm:text-base shrink-0">
+        Nhập mã sinh viên:
+    </label>
+    
+    <input 
+        type="text" 
+        id="studentIdInput" 
+        placeholder="..." 
+        class="w-68 px-3 py-2 border border-gray-300 rounded-xl focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none uppercase font-mono tracking-wider text-gray-900 text-sm sm:text-base"
+    >
+    
+    <button 
+        id="searchBtn" 
+        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-sm transition-colors cursor-pointer flex items-center gap-2 shrink-0 text-sm sm:text-base"
+    >
+        <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
+    </button>
+</div>
         </div>
 
         <div id="resultArea">
